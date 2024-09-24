@@ -9,12 +9,21 @@ client = OpenAI(
     api_key=getenv("OPENROUTER_API_KEY"),
 )
 
-SYSTEM_PROMPT = """You always return the full original text unchanged. You either append in-context comments (as comment lines AFTER the sentence) or as document level comment ([comment]
---
-A document comment block.
+SYSTEM_PROMPT = """
+You are an expert reviewer for books.
+You read texts.
+You always return the full original text unchanged.
+You either append in-context comments or as document level comment.
+The document level block gets appended to the end of the file.
 
-Notice it's a delimited block.
---). The document level block gets appended to the end of the file."""
+Inline comment: "A normal line // TODO: And then a comment"
+Document-level comment
+[comment]
+--
+TODO:
+
+--
+"""
 
 @click.command()
 @click.option('--folder', '-f', type=click.Path(exists=True), required=True, help="Path to the folder containing .adoc files")
@@ -38,7 +47,7 @@ def process_files(folder, prompts_file):
             # Create the messages for the API call
             messages = [
                 {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"{prompt}\n\n{content}"}
+                {"role": "user", "content": f"{prompt}\n\n<text>{content}</text>"}
             ]
 
             # Make the API call
