@@ -2,12 +2,13 @@
 
 ## Overview
 
-This application processes `.adoc` files in a specified folder using OpenAI's API. It reads prompts from a given file and applies them to each `.adoc` file, updating the content based on the API response.
+This application processes `.adoc` files in a specified folder using OpenRouter's API, which is compatible with OpenAI's API.  
+It reads prompts from a given file and applies them to each `.adoc` file, updating the content based on the API response.
 
 ## Prerequisites
 
 - Python 3.x
-- An API key from OpenAI (stored in the environment variable `OPENROUTER_API_KEY`)
+- An API key from OpenRouter (stored in the environment variable `OPENROUTER_API_KEY`)
 - `click` and `openai` Python packages installed
 
 ## Installation
