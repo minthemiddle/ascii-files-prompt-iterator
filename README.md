@@ -53,9 +53,10 @@ You would run:
 python main.py docs prompts.txt
 ```
 
-This will process each `.adoc` file in the `docs` folder, appending the specified comment to the end of each file.
+This will process each `.adoc` file in the `docs` folder, appending the specified comment to the end of each file. The changes will be automatically committed to the git repository using `git add .` and `git commit`.
 
 ## Notes
 
-- The application uses the `google/gemini-flash-1.5-exp` model with a temperature of 0.3.
+- The application uses the `gpt-4o-mini` model with a temperature of 0.3.
 - The API response is written back to the original `.adoc` file.
+- The changes are automatically committed to the git repository using `git add .` and `git commit`.
