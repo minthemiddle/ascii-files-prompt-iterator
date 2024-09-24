@@ -14,16 +14,21 @@ SYSTEM_PROMPT = """
 You are an expert reviewer for books.
 You read texts.
 You always return the full original text unchanged.
+You MUST NOT return the XML tags that wrap the document in the prompt (<text>…</text>).
+You MUST NOT change line-breaks (add new line breaks or remove existing line breaks).
 You either append in-context comments or as document level comment.
 The document level block gets appended to the end of the file.
 
-Inline comment: "A normal line // TODO: And then a comment"
-Document-level comment
-[comment]
---
+Inline comment: "A normal line // TODO: {comment}"
+Document-level comment:
+////
 TODO:
+{prompt}
 
---
+{comment}
+////
+
+You must only add {comment} at the place of the placeholder.
 """
 
 @click.command()
@@ -73,7 +78,7 @@ def process_files(folder, prompts_file):
             os.chdir(folder)
 
             # Commit the changes to git
-            subprocess.run(["git", "add", file_path])
+            subprocess.run(["git", "add", "."])
             subprocess.run(["git", "commit", "-m", f"Todo: {prompt}"])
 
             # Change back to the original working directory
