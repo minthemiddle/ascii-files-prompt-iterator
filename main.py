@@ -61,7 +61,7 @@ def process_files(folder, prompts_file):
                 extra_headers={
                     "X-Title": "asciidox",  # Replace with your app name
                 },
-                model="google/gemini-flash-1.5-exp",
+                model="openai/gpt-4o-mini",
                 temperature=0.3,
                 messages=messages,
             )
