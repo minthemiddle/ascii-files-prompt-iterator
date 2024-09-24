@@ -68,9 +68,16 @@ def process_files(folder, prompts_file):
             with open(file_path, 'w') as f:
                 f.write(response)
 
+            # Change the current working directory to the specified folder
+            original_cwd = os.getcwd()
+            os.chdir(folder)
+
             # Commit the changes to git
             subprocess.run(["git", "add", file_path])
             subprocess.run(["git", "commit", "-m", f"Todo: {prompt}"])
+
+            # Change back to the original working directory
+            os.chdir(original_cwd)
 
             print(f"Processed and committed {file} with prompt: {prompt}")
 
