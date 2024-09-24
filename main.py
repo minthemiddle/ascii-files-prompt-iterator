@@ -1,5 +1,6 @@
 import click
 import os
+import subprocess
 from openai import OpenAI
 from os import getenv
 
@@ -67,7 +68,11 @@ def process_files(folder, prompts_file):
             with open(file_path, 'w') as f:
                 f.write(response)
 
-            print(f"Processed {file} with prompt: {prompt}")
+            # Commit the changes to git
+            subprocess.run(["git", "add", file_path])
+            subprocess.run(["git", "commit", "-m", f"Todo: {prompt}"])
+
+            print(f"Processed and committed {file} with prompt: {prompt}")
 
 if __name__ == '__main__':
     process_files()
