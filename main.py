@@ -17,8 +17,8 @@ Notice it's a delimited block.
 --). The document level block gets appended to the end of the file."""
 
 @click.command()
-@click.argument('folder', type=click.Path(exists=True))
-@click.argument('prompts_file', type=click.Path(exists=True))
+@click.option('--folder', '-f', type=click.Path(exists=True), required=True, help="Path to the folder containing .adoc files")
+@click.option('--prompts-file', '-p', type=click.Path(exists=True), required=True, help="Path to the file containing prompts")
 def process_files(folder, prompts_file):
     # Read prompts from file
     with open(prompts_file, 'r') as f:
