@@ -1,4 +1,4 @@
-# Asciidox Processor
+# Asciidoc Prompt Iterator
 
 ## Overview
 
@@ -24,7 +24,7 @@ It reads prompts from a given file and applies them to each `.adoc` file, updati
    pip install click openai
    ```
 
-3. Set your OpenAI API key:
+3. Set your OpenRouterAI API key:
    ```sh
    export OPENROUTER_API_KEY=<your-api-key>
    ```
