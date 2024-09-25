@@ -55,7 +55,7 @@ def process_files(folder, prompts_file):
                 headlines = subprocess.check_output(["ggrep", "-E", "^=+\\s", file_path]).decode('utf-8')
                 headlines = subprocess.check_output(["gsed", "-E", "s/^=+\\s*//"], input=headlines.encode('utf-8')).decode('utf-8')
                 with open('map.txt', 'a') as map_file:
-                    map_file.write(headlines)
+                    map_file.write(f"# {file}\n{headlines}\n")
 
             # Create the messages for the API call
             messages = [
