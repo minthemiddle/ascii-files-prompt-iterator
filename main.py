@@ -3,6 +3,7 @@ import os
 import subprocess
 from openai import OpenAI
 from os import getenv
+import sys
 
 # Initialize OpenAI client
 client = OpenAI(
@@ -45,6 +46,8 @@ def process_files(folder, prompts_file):
     for prompt in prompts:
         for file in adoc_files:
             file_path = os.path.join(folder, file)
+            # print(file)
+            # sys.exit()
             
             # Read the content of the file
             with open(file_path, 'r') as f:
