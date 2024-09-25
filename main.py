@@ -43,22 +43,26 @@ def process_files(folder, prompts_file):
     # Get all .adoc files in the folder
     adoc_files = [f for f in os.listdir(folder) if f.endswith('.adoc')]
 
+    # Collect all headlines from all .adoc files
+    all_headlines = {}
+    for file in adoc_files:
+        file_path = os.path.join(folder, file)
+        headlines = subprocess.check_output(["ggrep", "-E", "^=+\\s", file_path]).decode('utf-8')
+        headlines = subprocess.check_output(["gsed", "-E", "s/^=+\\s*//"], input=headlines.encode('utf-8')).decode('utf-8')
+        all_headlines[file] = headlines
+
+    # Write all collected headlines to map.txt
+    with open('map.txt', 'w') as map_file:
+        for file, headlines in all_headlines.items():
+            map_file.write(f"# {file}\n{headlines}\n")
+
     for prompt in prompts:
         for file in adoc_files:
             file_path = os.path.join(folder, file)
-            # print(file)
-            # sys.exit()
             
             # Read the content of the file
             with open(file_path, 'r') as f:
                 content = f.read()
-
-            # Extract headlines if the prompt contains '+map'
-            if '+map' in prompt:
-                headlines = subprocess.check_output(["ggrep", "-E", "^=+\\s", file_path]).decode('utf-8')
-                headlines = subprocess.check_output(["gsed", "-E", "s/^=+\\s*//"], input=headlines.encode('utf-8')).decode('utf-8')
-                with open('map.txt', 'a') as map_file:
-                    map_file.write(f"# {file}\n{headlines}\n")
 
             # Create the messages for the API call
             messages = [
