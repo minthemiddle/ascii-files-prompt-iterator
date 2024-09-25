@@ -51,8 +51,9 @@ def process_files(folder, prompts_file):
         headlines = subprocess.check_output(["gsed", "-E", "s/^=+\\s*//"], input=headlines.encode('utf-8')).decode('utf-8')
         all_headlines[file] = headlines
 
-    # Write all collected headlines to map.txt
-    with open('map.txt', 'w') as map_file:
+    # Write all collected headlines to map.txt in the specified folder
+    map_file_path = os.path.join(folder, 'map.txt')
+    with open(map_file_path, 'w') as map_file:
         for file, headlines in all_headlines.items():
             map_file.write(f"# {file}\n{headlines}\n")
 
@@ -72,7 +73,7 @@ def process_files(folder, prompts_file):
 
             # Include map.txt content in the prompt if '+map' is in the prompt
             if '+map' in prompt:
-                with open('map.txt', 'r') as map_file:
+                with open(map_file_path, 'r') as map_file:
                     map_content = map_file.read()
                 messages[1]["content"] += f"\n\nHere are all headlines from all documents from the project: <headlines>{map_content}</headlines>"
 
