@@ -50,11 +50,27 @@ def process_files(folder, prompts_file):
             with open(file_path, 'r') as f:
                 content = f.read()
 
+            # Extract headlines if the prompt contains '+map'
+            if '+map' in prompt:
+                headlines = subprocess.check_output(["ggrep", "-E", "^=+\\s", file_path]).decode('utf-8')
+                headlines = subprocess.check_output(["gsed", "-E", "s/^=+\\s*//"], input=headlines.encode('utf-8')).decode('utf-8')
+                with open('map.txt', 'a') as map_file:
+                    map_file.write(headlines)
+
             # Create the messages for the API call
             messages = [
                 {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"{prompt}\n\n<text>{content}</text>"}
+                {"role": "user", "content": prompt}
             ]
+
+            # Include map.txt content in the prompt if '+map' is in the prompt
+            if '+map' in prompt:
+                with open('map.txt', 'r') as map_file:
+                    map_content = map_file.read()
+                messages[1]["content"] += f"\n\nHere are all headlines from all documents from the project: <headlines>{map_content}</headlines>"
+
+            # Include the content of the file in the prompt
+            messages[1]["content"] += f"\n\n<text>{content}</text>"
 
             # Make the API call
             completion = client.chat.completions.create(
