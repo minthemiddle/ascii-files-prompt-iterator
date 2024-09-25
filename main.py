@@ -35,9 +35,9 @@ You must only add {comment} at the place of the placeholder.
 @click.option('--folder', '-f', type=click.Path(exists=True), required=True, help="Path to the folder containing .adoc files")
 @click.option('--prompts-file', '-p', type=click.Path(exists=True), required=True, help="Path to the file containing prompts")
 def process_files(folder, prompts_file):
-    # Read prompts from file
+    # Read prompts from file and filter out commented lines
     with open(prompts_file, 'r') as f:
-        prompts = f.read().splitlines()
+        prompts = [line for line in f.read().splitlines() if not line.startswith('#')]
 
     # Get all .adoc files in the folder
     adoc_files = [f for f in os.listdir(folder) if f.endswith('.adoc')]
