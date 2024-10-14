@@ -76,6 +76,8 @@ def process_files(folder, prompts_file):
                 with open(map_file_path, 'r') as map_file:
                     map_content = map_file.read()
                 messages[1]["content"] += f"\n\nHere are all headlines from all documents from the project: <headlines>{map_content}</headlines>"
+                
+            messages[1]["content"] += f"\n\nYou are currently editing document: {file}"
 
             # Include the content of the file in the prompt
             messages[1]["content"] += f"\n\n<text>{content}</text>"
